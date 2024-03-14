@@ -45,7 +45,8 @@ class App extends React.Component {
   };
 
   handleOperatorClick = operator => {
-    const newOutput = `${this.state.output}${operator}`;
+    const lastChar = this.state.output[this.state.output.length - 1]
+    const newOutput = `${operatorLabels.includes(lastChar) ? this.state.output.slice(0, -1) : this.state.output}${operator}`
 
     this.setState({output: newOutput});
   };
