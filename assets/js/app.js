@@ -36,7 +36,7 @@ class App extends React.Component {
   handleClick = value => {
     this.setState(oldState => ({
       ...oldState,
-      output: `${oldState.output === '0' ? '' : oldState.output}${value}`,
+      output: `${oldState.output == '0' ? '' : oldState.output}${value}`,
     }));
   };
 
@@ -44,7 +44,7 @@ class App extends React.Component {
     const lastChar = this.state.output[this.state.output.length - 1]
 
     // Separate each number to prevent double dots (Ex : 2.5.6 ...) using regex
-    const sepatedArray = this.state.output.split(/[+\-*÷]/g)
+    const sepatedArray = String(this.state.output).split(/[+\-*÷]/g)
 
     // Check if a '.' exist on the last number
     const dotExist = sepatedArray[sepatedArray.length - 1].includes(dot)
@@ -62,6 +62,13 @@ class App extends React.Component {
 
     this.setState({output: newOutput});
   };
+
+  handleEqual = () => {
+    const lastChar = this.state.output[this.state.output.length - 1]
+    const formattedExpression = String(this.state.output).replaceAll('÷', '/')
+
+    this.setState({output: !isNaN(lastChar) ? eval(formattedExpression) : this.state.output});
+  }
 
   render() {
     return (
@@ -89,7 +96,7 @@ class App extends React.Component {
           <Button className="calculator-key-reset" onClick={this.handleReset}>
             AC
           </Button>
-          <Button className="calculator-key-enter">=</Button>
+          <Button className="calculator-key-enter" onClick={this.handleEqual}>=</Button>
         </div>
       </div>
     );
