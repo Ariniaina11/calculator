@@ -40,6 +40,18 @@ class App extends React.Component {
     }));
   };
 
+  handleDot = (dot) => {
+    const lastChar = this.state.output[this.state.output.length - 1]
+
+    // Separate each number to prevent double dots (Ex : 2.5.6 ...) using regex
+    const sepatedArray = this.state.output.split(/[+\-*÷]/g)
+
+    // Check if a '.' exist on the last number
+    const dotExist = sepatedArray[sepatedArray.length - 1].includes(dot)
+
+    this.setState({output : isNaN(lastChar) || dotExist ? this.state.output : `${this.state.output}${dot}`})
+  }
+
   handleReset = () => {
     this.setState({output: '0'});
   };
@@ -73,7 +85,7 @@ class App extends React.Component {
               </Button>
             )),
           )}
-          <Button>.</Button>
+          <Button onClick={() => this.handleDot('.')}>.</Button>
           <Button className="calculator-key-reset" onClick={this.handleReset}>
             AC
           </Button>
